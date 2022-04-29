@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf 8">
+        <meta name="viewport" content="width=device-width">
+        <title>js</title> 
+        <link rel="stylesheet" href="2048.css">
+    </head>
+    <body>
+
+        <div class="main">
+            <div class="winline none animation"></div>
+        
+            <div class="cells">
+                <div class="row">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
+                <div class="row">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
+                <div class="row">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell">4</div>
+                </div>
+                <div class="row">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell">4</div>
+                </div>
+        
+            </div>
+        
+        </div >
+
+
+        <script>
+
+
+            let cells = document.querySelectorAll('.cell');
+            let body = document.querySelector('body')
+            let arr = [0,1,2,3,
+                        4,5,6,7,
+                        8,9,10,11,
+                        12,13,14,15]
+            function turn() {
+                    if (event.key == 'ArrowDown') {turnDown()}
+                }
+
+            
+            
+            function turnDown() {
+                for (let i = 15; i>=0; i--) {
+                    let bee=i-4;
+                    if (cells[i].innerHTML == cells[bee].innerHTML) {
+                        cells[bee].innerHTML = '';
+                        cells[i].innerHTML = Number(cells[i].innerHTML)*2
+                        console.log(cells[i].innerHTML)
+                    }
+                }
+            }
+          
+
+
+
+
+
+
+
+
+
+                body.addEventListener('keydown', turn)
+            
+
+
+
+
+
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+        
+    </body>
+    </html>
