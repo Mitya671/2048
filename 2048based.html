@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "utf 8">
+        <link rel = "stylesheet" href = "2048.css">
+
+ </head>
+ <body>
+
+
+    <h1>2048</h1>
+    <hr>
+    <h2>Score: <span id="score">0</span></h2>
+    <div id="field">
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <script>
+let body = document.querySelector('body');
+let field = document.querySelector('#field');
+let rows = 4;
+let columns = 4;
+let board = [
+    [8,8,8,8],
+    [8,8,16,8],
+    [2,2,4,2],
+    [0,0,32,32],
+]
+window.addEventListener('onload', setgame());
+function setgame() {
+    for(let r = 0; r<rows; r++) {
+        for(let c = 0; c<columns; c++) {
+            let tile = document.createElement('div');
+            tile.id = r.toString() + '-' + c.toString();
+            tile.classList.add('tile');
+            field.append(tile)
+        }
+    }
+}
+updateTiles()
+function updateTiles() {
+    for(let r = 0; r<rows; r++) {
+        for(let c = 0; c<columns; c++) {
+            let tile = document.getElementById(r.toString()+'-'+c.toString());
+            tile.innerHTML = '';
+            tile.classList.value = '';
+            tile.classList.add('tile');
+            tile.classList.add('x'+board[r][c].toString());
+            if (board[r][c]!=0){
+            tile.innerHTML = board[r][c].toString();
+        }
+        }
+    }
+}
+
+
+body.addEventListener('keyup', turn);
+
+
+
+
+
+
+
+
+
+
+
+
+
+function turn() {
+    if (event.code == 'ArrowLeft') {
+        turnLeft();
+
+
+    }
+}
+
+
+
+
+
+
+function turnLeft(){
+    filterZero();
+    for(let i=0; i<board.length; i++) {
+        for (let j=0; j<board[i].length; j++) {
+            if (board[i][j]==board[i][j+1]) {
+                board[i][j]=board[i][j]*2;
+                board[i][j+1]=0
+            }
+        }
+    }
+    filterZero();
+    addZeros();
+    console.log(board);
+    afterTurn()
+
+}
+
+
+
+function filterZero(){
+    for (let i=0; i<4; i++){
+    board[i] = board[i].filter(function(elem){return elem!=0})
+    }
+
+}
+
+function addZeros(){
+   for (let i of board) {
+        while (i.length<4) {
+            i.push(0);
+        }
+   }
+}
+
+function afterTurn () {
+    for(let r = 0; r<rows; r++) {
+        for(let c = 0; c<columns; c++) {
+            let tile = document.getElementById(r.toString()+'-'+c.toString());
+            tile.innerHTML=''
+            if (board[r][c]!=0){
+            tile.innerHTML = board[r][c];
+        }
+            tile.classList.value='tile';
+            tile.classList.add('x'+board[r][c].toString())
+        }
+    }
+}
+
+
+
+
+
+
+
+ </script>
+</body>
+</html>
