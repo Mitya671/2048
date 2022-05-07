@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "utf 8">
+        <title >bug</title>
+        <link rel = "stylesheet" href = "2048.css">
+
+ </head>
+ <body>
+
+
+    <h1>2048</h1>
+    <hr>
+    <h2>Score: <span id="score">0</span></h2>
+    <div id="field">
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <script>
+let score = document.querySelector('#score');
+let body = document.querySelector('body');
+let field = document.querySelector('#field');
+let rows = 4;
+let columns = 4;
+let board = [
+    [0,0,0,0],
+    [0,0,0,0],
+    [2,0,0,0],
+    [2,0,0,0],
+]
+window.addEventListener('onload', setgame());
+function setgame() {
+    for(let r = 0; r<rows; r++) {
+        for(let c = 0; c<columns; c++) {
+            let tile = document.createElement('div');
+            tile.id = r.toString() + '-' + c.toString();
+            tile.classList.add('tile');
+            field.append(tile)
+        }
+    }
+}
+updateTiles()
+function updateTiles() {
+    for(let r = 0; r<rows; r++) {
+        for(let c = 0; c<columns; c++) {
+            let tile = document.getElementById(r.toString()+'-'+c.toString());
+            tile.innerHTML = '';
+            tile.classList.value = '';
+            tile.classList.add('tile');
+            tile.classList.add('x'+board[r][c].toString());
+            if (board[r][c]!=0){
+            tile.innerHTML = board[r][c].toString();
+        }
+        }
+    }
+}
+let oldBoard = [];
+oldBoard = Object.assign(oldBoard, board);
+
+
+body.addEventListener('keyup', turn);
+
+
+
+
+function turn() {
+    if (event.code == 'ArrowLeft') {
+        turnLeft();
+    }
+    if (event.code == 'ArrowRight') {
+        turnRight();
+        afterTurn();
+    }
+    if (event.code == 'ArrowDown') {
+        turnDown();
+        afterTurn();
+    }
+    if (event.code == 'ArrowUp') {
+        turnUp();
+        afterTurn();
+    }
+}
+
+
+
+
+
+function turnLeft(){
+    let oldBoard = [];
+    oldBoard = Object.assign(oldBoard, board);
+    console.log(oldBoard);
+    console.log(board);
+    filterZero();
+    for(let i=0; i<board.length; i++) {
+        for (let j=0; j<board[i].length; j++) {
+            if (board[i][j]==board[i][j+1]) {
+                board[i][j]=board[i][j]*2;
+                board[i][j+1]=0;
+            }
+        }
+    }
+    if (oldBoard == board) {return };
+    filterZero();
+    addZeros();
+    afterTurn();
+    addNum();
+}
+
+function turnRight(){
+    filterZero();
+    boardReverse();
+    for(let i=0; i<board.length; i++) {
+        for (let j=0; j<board[i].length; j++) {
+            if (board[i][j]==board[i][j+1]) {
+                board[i][j]=board[i][j]*2;
+                board[i][j+1]=0;
+                score.innerHTML = Number(score.innerHTML) + board[i][j];
+            }
+        }
+    }
+    filterZero();
+    addZeros();
+    boardReverse();
+}
+
+function turnDown() {
+    boardDown();
+    filterZero();
+    for(let i=0; i<board.length; i++) {
+        for (let j=0; j<board[i].length; j++) {
+            if (board[i][j]==board[i][j+1]) {
+                board[i][j]=board[i][j]*2;
+                board[i][j+1]=0;
+                score.innerHTML = Number(score.innerHTML) + board[i][j];
+            }
+        }
+    }
+    filterZero();
+    addZeros();
+    boardUp();
+}
+
+function turnUp() {
+    boardUp();
+    filterZero();
+    for(let i=0; i<board.length; i++) {
+        for (let j=0; j<board[i].length; j++) {
+            if (board[i][j]==board[i][j+1]) {
+                board[i][j]=board[i][j]*2;
+                board[i][j+1]=0;
+                score.innerHTML = Number(score.innerHTML) + board[i][j];
+            }
+        }
+    }
+    filterZero();
+    addZeros();
+    boardDown();
+}
+
+
+
+
+
+
+
+
+
+function boardReverse() {
+    for( let i of board) {
+        i.reverse();
+    }
+}
+
+
+
+function filterZero(){
+    for (let i=0; i<4; i++){
+    board[i] = board[i].filter(function(elem){return elem!=0})
+    }
+}
+
+function addZeros(){
+   for (let i of board) {
+        while (i.length<4) {
+            i.push(0);
+        }
+   }
+}
+
+function afterTurn () {
+    for(let r = 0; r<rows; r++) {
+        for(let c = 0; c<columns; c++) {
+            let tile = document.getElementById(r.toString()+'-'+c.toString());
+            tile.innerHTML=''
+            if (board[r][c]!=0){
+            tile.innerHTML = board[r][c];
+        }
+            tile.classList.value='tile';
+            tile.classList.add('x'+board[r][c].toString())
+        }
+    }
+}
+
+function boardDown() {
+    let newBoard = [];
+    for (let i=0; i<columns; i++) {
+        let newRow = [];
+        for (let j=3; j>=0; j--) {
+            newRow.push(board[j][i]);
+        }
+        newBoard.push(newRow);
+    }
+    board = newBoard;
+}
+
+function boardUp() {
+    let newBoard = [];
+    for (let i=3; i>=0; i--) {
+        let newRow = [];
+        for (let j=0; j<columns; j++) {
+            newRow.push(board[j][i]);
+        }
+        newBoard.push(newRow);
+    }
+    board = newBoard;
+
+}
+
+
+
+
+function addNum() {
+    let arr = [];
+    for (let i = 0; i<rows; i++) {
+        for (let j = 0; j<columns; j++) {
+            let bee = [];
+            if (board[i][j]==0) {
+                bee.push(i,j);
+                arr.push(bee);
+            }
+        }
+    }
+    let randomTile=0;
+    if (arr.length>1) {
+        randomTile = function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}(0,arr.length-1)
+    }
+    if (arr.length==0) {
+        endGame()
+    }
+
+    let randomNum = function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}(1,10)
+
+
+    let r = arr[randomTile][0];
+    let c = arr[randomTile][1];
+    if (randomNum==10) {
+    board[r][c] = 4} else {
+        board[r][c] = 2
+    };
+    afterTurn();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ </script>
+</body>
+</html>
